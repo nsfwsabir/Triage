@@ -1,6 +1,8 @@
 import axios from 'axios'
 
-export const client = axios.create({ baseURL: '/api/v1' })
+export const client = axios.create({
+  baseURL: (import.meta.env.VITE_API_URL as string | undefined) ?? '/api/v1',
+})
 
 client.interceptors.request.use((config) => {
   const token = localStorage.getItem('triage_token')
