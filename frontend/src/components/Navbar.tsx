@@ -16,7 +16,7 @@ export function Navbar() {
           </span>
         </div>
         <div className="flex items-center gap-3">
-          <span className="text-sm text-zinc-500">{user.fullName}</span>
+          <span className="text-sm text-zinc-500 hidden sm:inline">{user.fullName}</span>
           <button
             onClick={logout}
             title="Log out"

@@ -78,19 +78,19 @@ export default function Dashboard() {
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-      className="px-6 py-8 max-w-6xl mx-auto"
+      className="px-4 sm:px-6 py-8 max-w-6xl mx-auto"
     >
       <div className="flex items-baseline justify-between mb-6">
         <h1 className="text-xl font-semibold tracking-tight text-zinc-950">Tickets</h1>
-        {!isAdmin && <p className="text-xs text-zinc-500">Showing tickets you created</p>}
+        {!isAdmin && <p className="text-xs text-zinc-500 hidden sm:block">Showing tickets you created</p>}
       </div>
 
       {metrics ? (
-        <div className="grid grid-cols-4 divide-x divide-zinc-200 bg-white border border-zinc-200 rounded-lg mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-zinc-200 bg-white border border-zinc-200 rounded-lg mb-6">
           {metrics.map((m) => (
             <div key={m.label} className="px-5 py-4">
               <p className="text-xs text-zinc-500 mb-1">{m.label}</p>
-              <p className="text-2xl font-semibold tracking-tight text-zinc-950 tabular-nums">{m.value}</p>
+              <p className="text-xl sm:text-2xl font-semibold tracking-tight text-zinc-950 tabular-nums">{m.value}</p>
             </div>
           ))}
         </div>
@@ -98,13 +98,13 @@ export default function Dashboard() {
         <div className="h-[86px] rounded-lg bg-zinc-100 animate-pulse mb-6" />
       )}
 
-      <div className="flex items-center justify-between gap-3 mb-4">
-        <div className="flex items-center gap-1 bg-white border border-zinc-200 rounded-md p-0.5">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+        <div className="flex items-center gap-1 bg-white border border-zinc-200 rounded-md p-0.5 w-fit max-w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {filterTabs.map((tab) => (
             <button
               key={tab.key}
               onClick={() => setStatusFilter(tab.key)}
-              className={`relative px-3 h-7 text-xs font-medium rounded-[5px] transition-colors ${
+              className={`relative px-3 h-7 text-xs font-medium rounded-[5px] whitespace-nowrap transition-colors ${
                 statusFilter === tab.key ? 'text-zinc-950' : 'text-zinc-500 hover:text-zinc-950'
               }`}
             >
@@ -120,19 +120,19 @@ export default function Dashboard() {
           ))}
         </div>
         <div className="flex items-center gap-2">
-          <div className="relative">
+          <div className="relative flex-1 min-w-0 sm:flex-none">
             <Search size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-zinc-400" />
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search tickets"
-              className="h-9 w-56 pl-8 pr-3 rounded-md border border-zinc-200 bg-white text-sm text-zinc-950 placeholder:text-zinc-400 focus:outline-none focus:ring-1 focus:ring-zinc-900 transition-shadow"
+              className="h-9 w-full sm:w-56 pl-8 pr-3 rounded-md border border-zinc-200 bg-white text-sm text-zinc-950 placeholder:text-zinc-400 focus:outline-none focus:ring-1 focus:ring-zinc-900 transition-shadow"
             />
           </div>
           <select
             value={priorityFilter}
             onChange={(e) => setPriorityFilter(e.target.value as TicketPriority | '')}
-            className="h-9 px-2.5 rounded-md border border-zinc-200 bg-white text-sm text-zinc-600 focus:outline-none focus:ring-1 focus:ring-zinc-900"
+            className="h-9 px-2.5 rounded-md border border-zinc-200 bg-white text-sm text-zinc-600 shrink-0 focus:outline-none focus:ring-1 focus:ring-zinc-900"
           >
             {priorityOptions.map((o) => (
               <option key={o.key} value={o.key}>{o.label}</option>
@@ -141,10 +141,10 @@ export default function Dashboard() {
           <motion.button
             whileTap={{ scale: 0.98 }}
             onClick={() => setDrawerOpen(true)}
-            className="h-9 px-3.5 rounded-md bg-zinc-900 hover:bg-zinc-800 text-white text-sm font-medium inline-flex items-center gap-1.5 transition-colors"
+            className="h-9 px-3.5 rounded-md bg-zinc-900 hover:bg-zinc-800 text-white text-sm font-medium inline-flex items-center gap-1.5 shrink-0 transition-colors"
           >
             <Plus size={14} strokeWidth={2.5} />
-            New Ticket
+            <span className="hidden sm:inline">New Ticket</span>
           </motion.button>
         </div>
       </div>
@@ -174,22 +174,25 @@ export default function Dashboard() {
                   show: { opacity: 1, y: 0, transition: { duration: 0.2, ease: [0.16, 1, 0.3, 1] } },
                 }}
                 onClick={() => navigate(`/tickets/${t.id}`)}
-                className="w-full text-left px-5 py-3.5 flex items-center gap-4 hover:bg-zinc-50/80 transition-colors"
+                className="w-full text-left px-4 sm:px-5 py-3.5 flex items-center gap-3 sm:gap-4 hover:bg-zinc-50/80 transition-colors"
               >
-                <span className="font-mono text-xs text-zinc-500 tabular-nums w-12 shrink-0">#{t.id}</span>
+                <span className="hidden sm:block font-mono text-xs text-zinc-500 tabular-nums w-12 shrink-0">#{t.id}</span>
                 <div className="flex-1 min-w-0">
-                  <span className="block text-sm font-medium text-zinc-950 truncate">{t.title}</span>
+                  <span className="block text-sm font-medium text-zinc-950 truncate">
+                    <span className="sm:hidden font-mono text-[11px] text-zinc-400 mr-1.5">#{t.id}</span>
+                    {t.title}
+                  </span>
                 </div>
-                <span className="text-[11px] px-1.5 py-0.5 rounded border border-zinc-200 bg-zinc-50 text-zinc-500 shrink-0">
+                <span className="hidden md:inline-flex text-[11px] px-1.5 py-0.5 rounded border border-zinc-200 bg-zinc-50 text-zinc-500 shrink-0">
                   {t.category}
                 </span>
-                <div className="w-28 shrink-0">
+                <div className="shrink-0">
                   <StatusBadge status={t.status} />
                 </div>
-                <div className="w-24 shrink-0">
+                <div className="hidden lg:block w-24 shrink-0">
                   <PriorityBadge priority={t.priority} />
                 </div>
-                <div className="w-28 shrink-0 flex items-center justify-end gap-2">
+                <div className="hidden md:flex w-28 shrink-0 items-center justify-end gap-2">
                   {t.assignedTo ? (
                     <span
                       title={t.assignedTo.fullName}
@@ -201,7 +204,7 @@ export default function Dashboard() {
                     <span className="text-xs text-zinc-400">Unassigned</span>
                   )}
                 </div>
-                <span className="text-xs text-zinc-500 tabular-nums w-16 text-right shrink-0">
+                <span className="text-[11px] sm:text-xs text-zinc-500 tabular-nums w-14 sm:w-16 text-right shrink-0">
                   {relativeTime(t.createdAt)}
                 </span>
               </motion.button>

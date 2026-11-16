@@ -110,18 +110,18 @@ export default function TicketDetailPage() {
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-      className="px-6 py-8 max-w-6xl mx-auto"
+      className="px-4 sm:px-6 py-8 max-w-6xl mx-auto"
     >
       <Link to="/dashboard" className="inline-flex items-center gap-1.5 text-xs text-zinc-500 hover:text-zinc-950 transition-colors mb-6">
         <ArrowLeft size={12} />
         Back to tickets
       </Link>
 
-      <div className="grid grid-cols-3 gap-8">
-        <div className="col-span-2 min-w-0">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+        <div className="lg:col-span-2 min-w-0">
           <div className="flex items-start gap-3 mb-1">
             <span className="font-mono text-xs text-zinc-500 tabular-nums mt-1.5">#{ticket.id}</span>
-            <h1 className="text-xl font-semibold tracking-tight text-zinc-950">{ticket.title}</h1>
+            <h1 className="text-lg sm:text-xl font-semibold tracking-tight text-zinc-950">{ticket.title}</h1>
           </div>
           <p className="text-xs text-zinc-500 mb-6">
             {ticket.createdBy.fullName} opened this ticket · {relativeTime(ticket.createdAt)}
